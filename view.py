@@ -40,7 +40,7 @@ class Position:
         num = int(token) - 1
         y = num // (9 * 9)
         x = (num - y * 9 * 9) // 9
-        value = num % 9
+        value = num % 9 + 1
         segment = 3 * (y // 3) + (x // 3)
         # print(f"{num} {x=} {y=} {value=}")
         self.x = x
