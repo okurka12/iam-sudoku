@@ -34,6 +34,7 @@ Included files
 
 .. view.py
    program to view the minisat output on a sudoku board
+   also check validity of the solution
 
 
 Usage
@@ -49,7 +50,7 @@ Usage
    translate to desired encoding
 
 .. python3 view.py < output-file
-   view model on a sudoku board
+   view model on a sudoku board and check validity of the solution
 
 .. ./run.sh run
    do all of the above (you will be prompted to confirm overwriting files, run
