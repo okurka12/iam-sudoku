@@ -56,6 +56,7 @@ ask_overwrite () {
 if [ "$1" = "clean" ]; then
     safe_delete "$DIMACS_FILE"
     safe_delete "$MINISAT_FILE"
+    safe_delete "$TRANSLATED_FILE"
     for FILE in *.zip; do
         safe_delete "$FILE"
     done
