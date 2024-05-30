@@ -16,6 +16,7 @@ PY=python3
 INPUT_FILE=input.txt
 DIMACS_FILE=sudoku-dimacs.txt
 MINISAT_FILE=minisat-output.txt
+TRANSLATED_FILE=minisat-output-translated.txt
 
 OPTION_Y="$2"
 
@@ -38,6 +39,7 @@ prompt_confirm () {
 safe_delete () {
     if [ -f "$1" ]; then
         prompt_confirm "delete $1?"
+        echo "deleting $1"
         rm "$1"
     fi
 }
@@ -52,8 +54,11 @@ ask_overwrite () {
 
 # clean and exit
 if [ "$1" = "clean" ]; then
-    safe_delete $DIMACS_FILE
-    safe_delete $MINISAT_FILE
+    safe_delete "$DIMACS_FILE"
+    safe_delete "$MINISAT_FILE"
+    for FILE in *.zip; do
+        safe_delete "$FILE"
+    done
     exit
 fi
 
@@ -64,6 +69,10 @@ $PY sudoku.py > $DIMACS_FILE < $INPUT_FILE
 # run minisat
 ask_overwrite "$MINISAT_FILE"
 minisat $DIMACS_FILE $MINISAT_FILE
+
+# translate output
+ask_overwrite "$TRANSLATED_FILE"
+$PY translate.py < "$MINISAT_FILE" > "$TRANSLATED_FILE"
 
 # run view.py
 $PY view.py < $MINISAT_FILE
