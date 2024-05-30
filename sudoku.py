@@ -45,6 +45,7 @@ class Clause:
     def get_literals(self) -> List[int]:
         return self.literals
 
+
 class Formula:
     """a class representing the CNF formula"""
 
@@ -111,8 +112,6 @@ class Formula:
                 qx, qy = q
                 idx2 = get_index(qx, qy, value)
                 self.add_clause(-idx1, -idx2)
-
-
 
     def generate_numbers(self) -> None:
         """
