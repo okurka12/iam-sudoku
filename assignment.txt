@@ -1,0 +1,24 @@
+Sudoku (harder, bonus) Deadline: unrestricted Encode Sudoku into a
+propositional formula. Write a program that, given an instance of Sudoku,
+outputs a CNF formula (in the DIMACS format) that is satisfiable iff the
+instance has a solution. Suppose that the input instance is given as a sequence
+of lines of the format r c v where r denotes the row number (1--9), c denotes
+the column number (1--9), and v denotes the value at the position [r,c] (again,
+1--9). E.g. consider the following instance:
+
+copied from Wikipedia
+
+The input of the instance would look like this:
+
+1 1 5
+1 2 3
+1 5 7
+2 1 6
+2 4 1
+...
+9 9 9
+
+Solve the instance above using a SAT solver. (Please, encode the input line of
+the form 1 2 3 as a variable with the number 123 to simplify grading.) Send the
+program and the model to "lengal@fit.vutbr.cz" with the subject 
+"[IAM] [SUDOKU]".
