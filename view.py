@@ -7,6 +7,7 @@
 
 #
 # a view program accompanying sudoku.py
+# used python version: Python 3.12.3 (GCC 13.1.0) on Debian 12.5
 #
 from typing import List
 import sys
@@ -34,7 +35,7 @@ class Position:
         y = num // (9 * 9)
         x = (num - y * 9 * 9) // 9
         value = num % 9
-        print(f"{num} {x=} {y=} {value=}")
+        # print(f"{num} {x=} {y=} {value=}")
         self.x = x
         self.y = y
         self.value = value
