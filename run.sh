@@ -59,7 +59,7 @@ fi
 
 # run sudoku.py
 ask_overwrite "$DIMACS_FILE"
-$PY sudoku.py > $DIMACS_FILE < input.txt
+$PY sudoku.py > $DIMACS_FILE < $INPUT_FILE
 
 # run minisat
 ask_overwrite "$MINISAT_FILE"
@@ -67,3 +67,12 @@ minisat $DIMACS_FILE $MINISAT_FILE
 
 # run view.py
 $PY view.py < $MINISAT_FILE
+
+# see the size of DIMACS_FILE, number of clauses
+echo "stats:"
+echo -n "DIMACS size: "
+ls -l -h $DIMACS_FILE | awk '{print $9, $5}'
+echo -n "Number of variables: "
+grep -E "p cnf [0-9]" $DIMACS_FILE | awk '{print $3}'
+echo -n "Number of clauses: "
+grep -E "p cnf [0-9]" $DIMACS_FILE | awk '{print $4}'
