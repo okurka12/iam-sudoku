@@ -1,6 +1,6 @@
 #!/bin/bash
 
-EXCLUDE_FILES="assignment.txt|pack.sh|assignment-board.txt"
+EXCLUDE_FILES="assignment.txt|pack.sh|assignment-board.txt|email.txt"
 
 FILES=$(ls | grep -v -E "$EXCLUDE_FILES")
 FILES=$(echo "$FILES" | tr '\n' ' ')
