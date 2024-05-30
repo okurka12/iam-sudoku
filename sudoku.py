@@ -12,7 +12,7 @@
 # used python version: Python 3.12.3 (GCC 13.1.0) on Debian 12.5
 #
 import sys
-from typing import List
+from typing import List, Tuple, Iterable
 from itertools import combinations
 
 STATUS_ERR = 5
@@ -52,8 +52,8 @@ class Formula:
         self.clauses: List[Clause] = []
         report_progress("generating rules: only one value")
         self.only_one_value()
-        report_progress("generating rules: rows and columns")
-        self.rows_and_columns()
+        report_progress("generating rules: rows, columns and segments")
+        self.rows_columns_segments()
         report_progress("generating rules: at least one number on position")
         self.generate_numbers()
 
@@ -75,7 +75,7 @@ class Formula:
                     self.add_clause(-idx1, -idx2)
 
     def one_row_one_column(self, rci: int) -> None:
-        """to be used in rows_and_columns"""
+        """to be used in rows_columns_segments"""
 
         # for every pair of ones, twos, threes... on the same row/column (rci),
         # one of them is false
@@ -92,12 +92,27 @@ class Formula:
                 c2 = get_index(rci, idx2, value)
                 self.add_clause(-c1, -c2)
 
-    def rows_and_columns(self) -> None:
+    def rows_columns_segments(self) -> None:
         """
         general sudoku rule: only one of each number on each row/column
         """
-        for row_index in range(9):
-            self.one_row_one_column(row_index)
+        for n in range(9):
+            self.one_row_one_column(n)
+            self.one_segment(n)
+
+    def one_segment(self, n: int) -> None:
+        """
+        generate clauses for numbers in nth segment (n is 0 to 8)
+        """
+        for value in range(1, 10):
+            for p, q in combinations(segment_coordinates(n), 2):
+                px, py = p
+                idx1 = get_index(px, py, value)
+                qx, qy = q
+                idx2 = get_index(qx, qy, value)
+                self.add_clause(-idx1, -idx2)
+
+
 
     def generate_numbers(self) -> None:
         """
@@ -154,13 +169,35 @@ def assert_position_values(x: int, y: int, value: int) -> None:
     assert 1 <= value <= 9
 
 
+def segment_coordinates(n: int) -> Iterable[Tuple[int, int]]:
+    """
+    yields x-y coordinates of the positions in the n-th segment (n is 0 to 8)
+    the segmends are numbered like this:
+    ```txt
+    #############
+    # 0 | 1 | 2 #
+    #-----------#
+    # 3 | 4 | 5 #
+    #-----------#
+    # 6 | 7 | 8 #
+    #############
+    ```
+    """
+    assert 0 <= n <= 8
+    x_offset = 3 * (n % 3)
+    y_offset = 3 * (n // 3)
+    for x in range(x_offset, x_offset + 3):
+        for y in range(y_offset, y_offset + 3):
+            yield x, y
+
+
 def get_index(x: int, y: int, value: int) -> int:
     """
     returns an index of the variable at position x, y (0 to 8)
     with value (1 to 9)
 
     example values:
-    ```
+    ```txt
     x=0, y=0, value=1 -> 1
     x=0, y=0, value=2 -> 2
     x=0, y=0, value=3 -> 3
